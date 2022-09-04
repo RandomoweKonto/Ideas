@@ -51,7 +51,7 @@ public class Cone {
             System.out.println("Podaj dodatnia wartosc!");
             InnerDiameter(outerDiameter);
         }
-        else if(innerDiameter>outerDiameter){
+        else if(innerDiameter>=outerDiameter){
             System.out.println("Wewnetrzna srednica stozka musi byc mniejsza niz srednica zewnetrzna!");
             InnerDiameter(outerDiameter);
         }
@@ -197,7 +197,7 @@ public class Cone {
 
         System.out.println("Srednica zewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserOuterDiameter)+" mm.");
         System.out.println("Srednica wewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserInnerDiameter)+" mm.");
-        System.out.println("Kat rozwiniecia stozka wynoci "+String.format("%.4f",laserCuttingOuterAlpha)+" radianow ("+String.format("%.2f",laserCuttingOuterAlpha*180/Math.PI)+" stopni).");
+        System.out.println("Kat rozwiniecia stozka wynosi "+String.format("%.4f",laserCuttingOuterAlpha)+" radianow ("+String.format("%.2f",laserCuttingOuterAlpha*180/Math.PI)+" stopni).");
 
         double cuttingArea = Math.PI*(Math.pow(laserOuterDiameter/2000,2)-Math.pow(laserInnerDiameter/2000,2))*laserCuttingOuterAlpha/(2*Math.PI);
         System.out.println("Pole powierzchni rozwiniecia stozka wynosi "+String.format("%.4f",cuttingArea)+" metrow kwadratowych.");
