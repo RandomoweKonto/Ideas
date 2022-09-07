@@ -1,4 +1,4 @@
-package Ideas.work_related.cone;
+package pl.ideas.work_related.cone;
 
 import java.lang.Math;
 import java.util.Scanner;
@@ -19,18 +19,19 @@ public class Cone {
     }
     public static double WithoutBaseAngle(double outerDiameter, double innerDiameter, double height, double thickness){
         double baseAngle = 0;
-        for(double alfa=0; ((outerDiameter - innerDiameter)/2)*Math.tan(alfa) + thickness*Math.cos(alfa) - height < 0;alfa += 0.001){
+        for(double alfa=0; ((outerDiameter - innerDiameter)/2)*Math.tan(alfa) + thickness*Math.cos(alfa) - height < 0;alfa += 0.0001){
             baseAngle = alfa;
         }
-        if(baseAngle<=0 || baseAngle>Math.PI/2){
+        if(baseAngle<=0 || baseAngle>=Math.PI/2){
             System.out.println("Kat nieprawidlowy!");
+            System.exit(0);
             return 0;
         }
         return baseAngle;
     }
 
     public static double OuterDiameter(){
-        System.out.println("Podaj zewnetrzna srednice stozka.");
+        System.out.println("Podaj zewnetrzna srednice stozka (w milimetrach).");
         Scanner scanner = new Scanner(System.in);
 
         double outerDiameter = scanner.nextDouble();
@@ -42,7 +43,7 @@ public class Cone {
         return outerDiameter;
     }
     public static double InnerDiameter(double outerDiameter){
-        System.out.println("Podaj wewnetrzna srednice stozka.");
+        System.out.println("Podaj wewnetrzna srednice stozka (w milimetrach).");
         Scanner scanner = new Scanner(System.in);
 
         double innerDiameter = scanner.nextDouble();
@@ -59,7 +60,7 @@ public class Cone {
     }
 
     public static double Height(){
-        System.out.println("Podaj wysokosc stozka.");
+        System.out.println("Podaj wysokosc stozka (w milimetrach).");
         Scanner scanner = new Scanner(System.in);
 
         double height = scanner.nextDouble();
@@ -72,7 +73,7 @@ public class Cone {
     }
 
     public static double ThicknessWithBaseAngle(double baseAngle, double innerDiameter){
-        System.out.println("Podaj grubosc blachy stozka.");
+        System.out.println("Podaj grubosc blachy stozka (w milimetrach).");
         Scanner scanner = new Scanner(System.in);
 
         double thickness = scanner.nextDouble();
@@ -87,7 +88,7 @@ public class Cone {
         return thickness;
     }
     public static double ThicknessWithoutBaseAngle(double height){
-        System.out.println("Podaj grubosc blachy stozka.");
+        System.out.println("Podaj grubosc blachy stozka (w milimetrach).");
         Scanner scanner = new Scanner(System.in);
 
         double thickness = scanner.nextDouble();
@@ -103,7 +104,7 @@ public class Cone {
         return thickness;
     }
 
-    public static int ConeWithoutBaseAngle(){
+    public static void ConeWithoutBaseAngle(){
         double outerDiameter = OuterDiameter();
         double innerDiameter = InnerDiameter(outerDiameter);
         double height = Height();
@@ -130,8 +131,8 @@ public class Cone {
             System.out.println("Cos jest nie tak...");
         }
 
-        System.out.println("Srednica zewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserOuterDiameter)+" mm.");
-        System.out.println("Srednica wewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserInnerDiameter)+" mm.");
+        System.out.println("Srednica zewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserOuterDiameter)+" milimetrow.");
+        System.out.println("Srednica wewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserInnerDiameter)+" milimetrow.");
         System.out.println("Kat rozwiniecia stozka wynoci "+String.format("%.4f",laserCuttingOuterAlpha)+" radianow ("+String.format("%.2f",laserCuttingOuterAlpha*180/Math.PI)+" stopni).");
 
         double cuttingArea = Math.PI*(Math.pow(laserOuterDiameter/2000,2)-Math.pow(laserInnerDiameter/2000,2))*laserCuttingOuterAlpha/(2*Math.PI);
@@ -146,29 +147,23 @@ public class Cone {
 
         Scanner scanner = new Scanner(System.in);
         int wybor = scanner.nextInt();
-        switch (wybor){
-            case 1:
-                rho = 7900;
-                break;
-            case 2:
-                rho = 7800;
-                break;
-            case 3:
-                rho = 8960;
-                break;
-            default:
+        switch (wybor) {
+            case 1 -> rho = 7900;
+            case 2 -> rho = 7800;
+            case 3 -> rho = 8960;
+            default -> {
                 System.out.println("Nie wiem z jakiego materialu jest stozek, przyjmuje wyjsciowo stal nierdzewna.");
                 rho = 7900;
-                break;
+            }
         }
 
         double cuttingMass = cuttingArea*thickness/1000*rho;
-        System.out.println("Masa wycinka stozka wynosi "+String.format("%.3f",cuttingMass)+" kg.");
+        System.out.println("Masa wycinka stozka wynosi "+String.format("%.3f",cuttingMass)+" kilogramow.");
 
-        return 0;
+        System.exit(0);
     }
 
-    public static int ConeWithBaseAngle(){
+    public static void ConeWithBaseAngle(){
         double outerDiameter = OuterDiameter();
         double innerDiameter = InnerDiameter(outerDiameter);
         double baseAngle = WithBaseAngle();
@@ -176,7 +171,20 @@ public class Cone {
 
         double height = ((outerDiameter-innerDiameter)/2)*Math.tan(baseAngle)+thickness*Math.cos(baseAngle);
 
-        System.out.println("Wysokosc stozka wynoci "+String.format("%.0f",height)+" mm");
+        String heightFormat;
+        int heightInt = (int) Math.round(height);
+
+        if((heightInt%10)!=2&&(heightInt%10)!=3&&(heightInt%10)!=4){
+            heightFormat = " milimetrow.";
+        }
+        else if(heightInt%100==12||heightInt%100==13||heightInt%100==14){
+            heightFormat = " milimetrow.";
+        }
+        else{
+            heightFormat = " milimetry.";
+        }
+
+        System.out.println("Wysokosc stozka wynosi "+String.format("%.0f",height)+heightFormat);
 
         double centerOuterDiameter = outerDiameter - thickness*Math.sin(baseAngle);
         double centerInnerDiameter = innerDiameter - thickness*Math.sin(baseAngle);
@@ -195,9 +203,9 @@ public class Cone {
             System.out.println("Cos jest nie tak...");
         }
 
-        System.out.println("Srednica zewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserOuterDiameter)+" mm.");
-        System.out.println("Srednica wewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserInnerDiameter)+" mm.");
-        System.out.println("Kat rozwiniecia stozka wynosi "+String.format("%.4f",laserCuttingOuterAlpha)+" radianow ("+String.format("%.2f",laserCuttingOuterAlpha*180/Math.PI)+" stopni).");
+        System.out.println("Srednica zewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserOuterDiameter)+" milimetrow.");
+        System.out.println("Srednica wewnetrzna rozwiniecia wynosi "+String.format("%.2f",laserInnerDiameter)+" milimetrow.");
+        System.out.println("Kat rozwiniecia stozka wynoci "+String.format("%.4f",laserCuttingOuterAlpha)+" radianow ("+String.format("%.2f",laserCuttingOuterAlpha*180/Math.PI)+" stopni).");
 
         double cuttingArea = Math.PI*(Math.pow(laserOuterDiameter/2000,2)-Math.pow(laserInnerDiameter/2000,2))*laserCuttingOuterAlpha/(2*Math.PI);
         System.out.println("Pole powierzchni rozwiniecia stozka wynosi "+String.format("%.4f",cuttingArea)+" metrow kwadratowych.");
@@ -211,29 +219,25 @@ public class Cone {
 
         Scanner scanner = new Scanner(System.in);
         int wybor = scanner.nextInt();
-        switch (wybor){
-            case 1:
-                rho = 7900;
-                break;
-            case 2:
-                rho = 7800;
-                break;
-            case 3:
-                rho = 8960;
-                break;
-            default:
+        switch (wybor) {
+            case 1 -> rho = 7900;
+            case 2 -> rho = 7800;
+            case 3 -> rho = 8960;
+            default -> {
                 System.out.println("Nie wiem z jakiego materialu jest stozek, przyjmuje wyjsciowo stal nierdzewna.");
                 rho = 7900;
-                break;
+            }
         }
 
         double cuttingMass = cuttingArea*thickness/1000*rho;
-        System.out.println("Masa wycinka stozka wynosi "+String.format("%.3f",cuttingMass)+" kg.");
+        System.out.println("Masa wycinka stozka wynosi "+String.format("%.3f",cuttingMass)+" kilogramow.");
 
-        return 0;
+        System.exit(0);
     }
 
     public static void main(String[] args){
+
+        new Cone();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -251,9 +255,7 @@ public class Cone {
         }
         else{
             System.out.println("Zly wybor!");
-            System.exit(0);
-            return;
+            main(args);
         }
     }
-
 }
