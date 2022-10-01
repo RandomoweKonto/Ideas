@@ -97,6 +97,7 @@ public class Cone {
             System.out.println("Podaj dodatnia wartosc!");
             ThicknessWithoutBaseAngle(height);
         }
+        //poprawić warunek poniżej! zparametryzować po średnicy zewnętrznej i wewnętrznej (dodać do zmiennych metody)
         else if(thickness>height){
             System.out.println("Podana grubosc blachy jest niepoprawna.");
             ThicknessWithoutBaseAngle(height);
